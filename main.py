@@ -1,16 +1,22 @@
-# This is a sample Python script.
+import streamlit as st
+from components.sidebar import Sidebar
+from components.study_components import StudyComponents
+from services.optuna_service import OptunaService
+from utils.session_manager import SessionManager
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+class App:
+    def __init__(self):
+        self.sidebar = Sidebar()
+        self.study_components = StudyComponents()
+        self.optuna_service = OptunaService()
+        self.session_manager = SessionManager()
 
+    def run(self):
+        st.title("Hyperparameter Tuning with Optuna (Iris Dataset)")
+        self.session_manager.initialize_session_state()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+        self.sidebar.display()
+        self.study_components.display_study_list()
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+        if st.session_state.get("run_optuna"):
+            self.optuna_service.run_optimization()
