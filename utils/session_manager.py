@@ -5,7 +5,8 @@ class SessionManager:
     def __init__(self):
         pass
 
-    def initialize_session_state(self):
+    @staticmethod
+    def initialize_session_state():
         if "studies" not in st.session_state:
             st.session_state["studies"] = []
         if "expanded_study_id" not in st.session_state:

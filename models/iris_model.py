@@ -6,7 +6,8 @@ from utils.data_loader import load_iris_data
 
 
 class IrisModel:
-    def objective(self, trial):
+    @staticmethod
+    def objective(trial):
         model_type = st.session_state["model_type"]
         split_ratio = st.session_state["split_ratio"]
         random_state = st.session_state["random_state"]
