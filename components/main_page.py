@@ -1,17 +1,14 @@
 import streamlit as st
-from services.optuna_service import OptunaService
+
+from components.main_page_components.optimization_actions import OptimizationActions
+from services.hp_framework_service import HPFrameworkService
+from utils.session_manager import SessionManager
 
 
 class MainPage:
-    def __init__(self):
-        self.optuna_service = OptunaService()
+    def __init__(self, session_manager: SessionManager, hp_framework_service: HPFrameworkService):
+        self.optimization_actions = OptimizationActions(session_manager, hp_framework_service)
 
     def display(self):
-        self._display_run_optuna_button()
-
-    def _display_run_optuna_button(self):
-        if st.button("Run Optuna Optimization"):
-            if st.session_state.get("selected_study_id"):
-                self.optuna_service.run_optimization()
-            else:
-                st.warning("Please select a study before running the optimization.")
+        st.title("Hyperparameter Tuning with Optuna")
+        self.optimization_actions._display_run_optuna_button()

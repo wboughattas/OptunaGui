@@ -1,27 +1,18 @@
-import streamlit as st
-
 from components.main_page import MainPage
 from components.sidebar import Sidebar
-from components.study_components import StudyComponents
-from services.optuna_service import OptunaService
+from services.hp_framework_service import HPFrameworkService
 from utils.session_manager import SessionManager
 
 
 class App:
     def __init__(self):
+        """Initializes the session manager, main_page, sidebar, and components"""
         self.session_manager = SessionManager()
-        self.main_page = MainPage()
-        self.sidebar = Sidebar()
-        self.study_components = StudyComponents()
-        self.optuna_service = OptunaService()
+        self.hp_framework_service = HPFrameworkService()
+        self.main_page = MainPage(self.session_manager, self.hp_framework_service)
+        self.sidebar = Sidebar(self.session_manager, self.hp_framework_service)
 
     def run(self):
-        st.title("Hyperparameter Tuning with Optuna (Iris Dataset)")
-        self.session_manager.initialize_session_state()
-
+        """Displays the main_page, sidebar, and components"""
         self.main_page.display()
         self.sidebar.display()
-        self.study_components.display_study_list()
-
-        if st.session_state.get("run_optuna"):
-            self.optuna_service.run_optimization()
